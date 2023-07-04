@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerShooter : MonoBehaviour
 {
 
-    private Vector2 mousePosition;
-    public Rigidbody2D rb;
-    public Camera sceneCamera;
+    // private Vector2 mousePosition;
+    // public Rigidbody2D rb;
+    // public Camera sceneCamera;
     public Weapon weapon;
 
 
@@ -16,24 +16,27 @@ public class PlayerShooter : MonoBehaviour
         ProcessInputs();
     }
 
-       void FixedUpdate()
+    // void FixedUpdate()
+    // {
+        // Aim();
+    // }
+
+
+    void ProcessInputs()
     {
-        Aim();
-    }
+        // mousePosition = sceneCamera.ScreenToWorldPoint(Input.mousePosition);
 
-
-    void ProcessInputs() {
-        mousePosition = sceneCamera.ScreenToWorldPoint(Input.mousePosition);
-
-        if(Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0))
         {
             weapon.Fire();
         }
     }
 
-    void Aim() {
-        Vector2 aimDirection = mousePosition - rb.position;
-        float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
-        rb.rotation = aimAngle;
-    }
+    // void Aim()
+    // {
+    //     Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //     Vector2 aimDirection = mouseWorldPosition - (Vector2)transform.position;
+    //     float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
+    //     transform.rotation = Quaternion.Euler(0f, 0f, aimAngle);
+    // }
 }
