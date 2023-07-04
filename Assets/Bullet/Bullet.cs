@@ -17,7 +17,6 @@ public class Bullet : MonoBehaviour
             // other.GameObject.GetComponent<MyEnemyScript>().takeDamage();
              Destroy(gameObject);
             break;
-        
         }
     }
 }
