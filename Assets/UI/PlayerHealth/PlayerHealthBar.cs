@@ -2,11 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealthBar : MonoBehaviour
 {
     public GameObject hearthPrefab;
-    public float health, maxHealth;
+    public PlayerHealth playerHealth;
     List<PlayerHealthHeart> hearts = new List<PlayerHealthHeart>();
+
+    private void OnEnable()
+    {
+        PlayerHealth.OnPlayerDamaged += DrawHearths;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnPlayerDamaged -= DrawHearths;
+    }
 
     public void Start()
     {
@@ -17,8 +27,8 @@ public class PlayerHealth : MonoBehaviour
     {
         ClearHearts();
 
-        float maxHealthRemainder = maxHealth % 2;
-        int heartsToMake = (int)((maxHealth / 2) + maxHealthRemainder);
+        float maxHealthRemainder = playerHealth.maxHealth % 2;
+        int heartsToMake = (int)((playerHealth.maxHealth / 2) + maxHealthRemainder);
         for (int i = 0; i < heartsToMake; i++)
         {
             CreateEmptyHeart();
@@ -26,7 +36,7 @@ public class PlayerHealth : MonoBehaviour
 
         for (int i = 0; i < hearts.Count; i++)
         {
-            int heartStatusRemainder = (int)Mathf.Clamp(health - (i * 2), 0, 2);
+            int heartStatusRemainder = (int)Mathf.Clamp(playerHealth.health - (i * 2), 0, 2);
             hearts[i].SetHeartImage((HeartStatus)heartStatusRemainder);
         }
     }

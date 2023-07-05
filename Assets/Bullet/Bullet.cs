@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public Rigidbody2D rb;
+    public float damage;
 
     void OnTriggerEnter2D(Collider2D other) 
     {
@@ -14,8 +15,8 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
             break;
             case "Enemy":
-            // other.GameObject.GetComponent<MyEnemyScript>().takeDamage();
-             Destroy(gameObject);
+            other.gameObject.GetComponent<Enemy>().TakeDamage(damage);
+            Destroy(gameObject);
             break;
         }
     }
