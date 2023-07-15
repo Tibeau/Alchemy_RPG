@@ -13,22 +13,33 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMovable, ITriggerCheckabl
 
     #region State Machine Variables
 
-    #region Idle Variables
+    #region  scriptableObjects Variables
 
-    public Rigidbody2D BulletPefab;
-    public float movementRange = 5f;
-    public float movementSpeed = 1f;
+    [SerializeField] private EnemyIdleSOBase EnemyIdleBase;
+    [SerializeField] private EnemyChaseSOBase EnemyChaseBase;
+    [SerializeField] private EnemyAttackSOBase EnemyAttackBase;
+
+    public EnemyIdleSOBase EnemyIdleBaseInstance { get; set; }
+    public EnemyChaseSOBase EnemyChaseBaseInstance { get; set; }
+    public EnemyAttackSOBase EnemyAttackBaseInstance { get; set; }
+
     #endregion
 
-    public EnemyStateMachine StateMachine {get; set;}
-    public EnemyIdleState IdleState {get; set;}
-    public EnemyAttackState AttackState {get; set;}
-    public EnemyChaseState ChaseState {get; set;}
+    public EnemyStateMachine StateMachine { get; set; }
+    public EnemyIdleState IdleState { get; set; }
+    public EnemyAttackState AttackState { get; set; }
+    public EnemyChaseState ChaseState { get; set; }
     #endregion
 
 
-    private void Awake() {
+    private void Awake()
+    {
+        EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
+        EnemyChaseBaseInstance = Instantiate(EnemyChaseBase);
+        EnemyAttackBaseInstance = Instantiate(EnemyAttackBase);
+
         StateMachine = new EnemyStateMachine();
+
         IdleState = new EnemyIdleState(this, StateMachine);
         AttackState = new EnemyAttackState(this, StateMachine);
         ChaseState = new EnemyChaseState(this, StateMachine);
@@ -37,15 +48,22 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMovable, ITriggerCheckabl
     private void Start()
     {
         CurrentHealth = MaxHealth;
+
+        EnemyIdleBaseInstance.Initialize(gameObject, this);
+        EnemyChaseBaseInstance.Initialize(gameObject, this);
+        EnemyAttackBaseInstance.Initialize(gameObject, this);
+
         RB = GetComponent<Rigidbody2D>();
         StateMachine.Initialize(IdleState);
     }
 
-    private void Update() {
+    private void Update()
+    {
         StateMachine.CurrentEnemyState.FrameUpdate();
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         StateMachine.CurrentEnemyState.PhysicsUpdate();
     }
 
@@ -79,11 +97,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMovable, ITriggerCheckabl
 
     public void CheckForLeftOrRightFacing(Vector2 velocity)
     {
-        if (IsFacingRight && velocity.x < 0f) {
+        if (IsFacingRight && velocity.x < 0f)
+        {
             Vector3 rotator = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
             IsFacingRight = !IsFacingRight;
-        } else if (!IsFacingRight && velocity.x > 0f) {
+        }
+        else if (!IsFacingRight && velocity.x > 0f)
+        {
             Vector3 rotator = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
             transform.rotation = Quaternion.Euler(rotator);
             IsFacingRight = !IsFacingRight;
@@ -92,21 +113,23 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMovable, ITriggerCheckabl
 
     #endregion
 
-#region Animation Triggers
+    #region Animation Triggers
 
-private void AnimationTriggerEvent(AnimationTriggerType triggerType) {
-    StateMachine.CurrentEnemyState.AnimationTriggerEvent(triggerType);
-}
+    private void AnimationTriggerEvent(AnimationTriggerType triggerType)
+    {
+        StateMachine.CurrentEnemyState.AnimationTriggerEvent(triggerType);
+    }
 
-    public enum AnimationTriggerType {
-    EnemyDamaged
-}
+    public enum AnimationTriggerType
+    {
+        EnemyDamaged
+    }
 
 
-#endregion
+    #endregion
 
 
-#region Distance Checks
+    #region Distance Checks
 
     public void SetAggroStatus(bool isAggroed)
     {
@@ -115,10 +138,10 @@ private void AnimationTriggerEvent(AnimationTriggerType triggerType) {
 
     public void SetStrikingDistanceBool(bool isWithinStrikingDistance)
     {
-       IsWithinStrikingDistance = isWithinStrikingDistance;
+        IsWithinStrikingDistance = isWithinStrikingDistance;
     }
 
-#endregion
+    #endregion
 
 }
 
