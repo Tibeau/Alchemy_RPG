@@ -21,17 +21,14 @@ public class PlayerStateMachine : MonoBehaviour
     {
         currentState.UpdateState(this);
 
-          // Check if the player has movement input
         bool hasMovementInput = GetComponent<PlayerMovement>().HasMovementInput();
 
         if (hasMovementInput)
         {
-            // Switch to the walking state if the player is moving
             SwitchState(WalkingState);
         }
         else
         {
-            // Switch back to the idle state if the player is not moving
             SwitchState(IdleState);
         }
     }
