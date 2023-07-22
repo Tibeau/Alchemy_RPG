@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925370c0cd78e6940aff9a8d1967cd8c, type: 3}
   m_Name: NewWeaponType
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 9171772498259162993, guid: bc6cc4dae85321e49afe7e33b406e817, type: 3}
+  bulletPrefab: {fileID: 3130974168749639564, guid: 910a2efca9e6c6241856d14ea15bcd4a, type: 3}
   shootAnimation: {fileID: 0}

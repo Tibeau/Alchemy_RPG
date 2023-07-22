@@ -1,35 +1,31 @@
 using UnityEngine;
 public class WeaponPartManager : MonoBehaviour
 {
-    [SerializeField] private WeaponType currentWeaponType;
-    [SerializeField] private WeaponElement currentWeaponElement;
-    [SerializeField] private WeaponUpgrades currentWeaponUpgrade;
-    [SerializeField] private float fireForce = 5f;
-
+    [SerializeField] private WeaponCombination currentWeaponCombination;
 
      public void SetFrontPart(WeaponType newWeaponType)
     {
-        currentWeaponType = newWeaponType;
+        currentWeaponCombination.WeaponType = newWeaponType;
     }
- public void SetMiddlePart(WeaponElement newWeaponElement)
+     public void SetMiddlePart(WeaponElement newWeaponElement)
     {
-        currentWeaponElement = newWeaponElement;
+         currentWeaponCombination.WeaponElement = newWeaponElement;
     }
 
     public void SetExtraPart(WeaponUpgrades newWeaponUpgrade)
     {
-        currentWeaponUpgrade = newWeaponUpgrade;
+         currentWeaponCombination.WeaponUpgrade = newWeaponUpgrade;
     }
 
     public WeaponProjectile GetCombinedBulletData()
     {
         WeaponProjectile projectileData = ScriptableObject.CreateInstance<WeaponProjectile>();
-        projectileData.bulletPrefab = currentWeaponType.bulletPrefab;
-        projectileData.shootAnimation = currentWeaponType.shootAnimation;
-        projectileData.elementalType = currentWeaponElement.elementalType;
-        projectileData.totalDamage = currentWeaponElement.damage + currentWeaponUpgrade.additionalDamage;
-        projectileData.fireForce = fireForce + currentWeaponUpgrade.additionalFireForce;
-        projectileData.color = currentWeaponElement.color;
+        projectileData.bulletPrefab =  currentWeaponCombination.WeaponType.bulletPrefab;
+        projectileData.shootAnimation =  currentWeaponCombination.WeaponType.shootAnimation;
+        projectileData.elementalType =  currentWeaponCombination.WeaponElement.elementalType;
+        projectileData.totalDamage =  currentWeaponCombination.WeaponElement.damage +  currentWeaponCombination.WeaponUpgrade.additionalDamage;
+        projectileData.fireForce =  currentWeaponCombination.fireForce +  currentWeaponCombination.WeaponUpgrade.additionalFireForce;
+        projectileData.color =  currentWeaponCombination.WeaponElement.color;
         return projectileData;
     }
 }
